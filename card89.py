@@ -1,54 +1,52 @@
-number = input("Please enter a card number: ")
-card_number = list(number.strip())
-cvv=int(input("Please enter a cvv:"))
-string = input("Enter your name: ")
-count1=len(number)
-
-        
-
-# Remove the last digit from the card number
-check_digit = card_number.pop()
-
-# Reverse the order of the remaining numbers
-card_number.reverse()
-
-processed_digits = []
-
-for index, digit in enumerate(card_number):
-	if index % 2 == 0:
-		doubled_digit = int(digit) * 2
-
-		# Subtract 9 from any results that are greater than 9		
-		if doubled_digit > 9:
-			doubled_digit = doubled_digit - 9
-
-		processed_digits.append(doubled_digit)
-	else:
-		processed_digits.append(int(digit))
-
-total = int(check_digit) + sum(processed_digits)
-
-# Verify that the sum of the digits is divisible by 10
-if(count1<13):
-        print("Invalid Card Number")
-elif (total % 10 == 0):
-	print("Valid card number")
-else:
-	print("Invalid card number")
-
-count=0
-while(cvv>0):
-    count=count+1
-    cvv=cvv//10
-if (count==3 or count==4):
-        print("Valid CVV")
-else:
-        print("Invalid CVV")
 
 
-if all(x.isalpha() or x.isspace() for x in string):
-    print("Valid name")
-else:
-    print("Invalid name")
+
+def check_name(name):
+
+    for character in name:
+
+        if not (character.isalpha() or character == ' '):
+
+            print("Name can only contain alphabets and spaces!")
+
+            return False
+
+    return True
+
+
+def check_card(card_number):
+    luhn_sum = 0
+    even_dig = False
+
+    for i in reversed(range(len(card_number))):
+        d = int(card_number[i])
+        if even_dig:
+            d *= 2
+        luhn_sum += (d // 10 + d % 10)
+
+        even_dig = not even_dig
+    if luhn_sum % 10 == 0:
+        return True
+    print("Invalid Card Number!")
+    return False
+
+
+def check_cvv(cvv):
+    if 100 < cvv < 10000:
+        return True
+    print("Invalid CVV!")
+    return False
+
+def valid(user_info):
+    return "Successfully validated card details" if check_name(user_info['user_name']) and check_card(
+        user_info['card_number']) and check_cvv(int(user_info['cvv']))  else "Try Again!"
+
+
+if __name__ == "__main__":
+    user_info = {'user_name': input("Enter name: "),
+                 'card_number': input("Card number: "),
+                 'cvv': input("CVV: ")}
+    print(valid(user_info))
+
 
 	
