@@ -7,8 +7,11 @@ before_install:
   - pip install -U pip
   - pip install -U pytest
   - pip install codecov
-install:
-  - pip install -e .[test] # install package + test dependencies
+  install:
+  # update pip to ensure extras_require format is supported
+  - 'pip install --upgrade pip'
+  - 'pip install ".[test]"
+
 script: pytest # run tests
 after_success:
   - codecov # submit coverage
